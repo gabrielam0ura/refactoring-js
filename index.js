@@ -9,11 +9,9 @@ function calcularCreditos(apre, pecas) {
 }
 
 function formatarMoeda(valor) {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-    minimumFractionDigits: 2
-  }).format(valor / 100);
+  return new Intl.NumberFormat("pt-BR",
+    { style: "currency", currency: "BRL", minimumFractionDigits: 2 }
+  ).format(valor / 100);
 }
 
 function getPeca(apresentacao, pecas) {
@@ -68,7 +66,22 @@ function gerarFaturaStr(fatura, pecas) {
   return faturaStr;
 }
 
+function gerarFaturaHTML(fatura, pecas) {
+  let result = `<html>\n`;
+  result += `<p> Fatura ${fatura.cliente} </p>\n`;
+  result += `<ul>\n`;
+  for (let apre of fatura.apresentacoes) {
+    result += `<li> ${getPeca(apre, pecas).nome}: ${formatarMoeda(calcularTotalApresentacao(apre, pecas))} (${apre.audiencia} assentos) </li>\n`;
+  }
+  result += `</ul>\n`;
+  result += `<p> Valor total: ${formatarMoeda(calcularTotalFatura(fatura, pecas))} </p>\n`;
+  result += `<p> Créditos acumulados: ${calcularTotalCreditos(fatura, pecas)} </p>\n`;
+  result += `</html>`;
+  return result;
+}
+
 const faturas = JSON.parse(readFileSync('./faturas.json'));
 const pecas = JSON.parse(readFileSync('./pecas.json'));
-const faturaStr = gerarFaturaStr(faturas, pecas);
-console.log(faturaStr);
+
+console.log(gerarFaturaStr(faturas, pecas));
+console.log(gerarFaturaHTML(faturas, pecas));
