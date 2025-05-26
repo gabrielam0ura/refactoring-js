@@ -8,7 +8,7 @@ function gerarFaturaStr(fatura, pecas) {
                       { style: "currency", currency: "BRL",
                         minimumFractionDigits: 2 }).format;
 
-  // Refactoring aqui
+  // Função extraída
   function calcularTotalApresentacao(apre, peca) {
     let total = 0;
     switch (peca.tipo) {
