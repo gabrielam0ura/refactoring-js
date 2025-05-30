@@ -1,0 +1,18 @@
+const { readFileSync } = require('fs');
+
+class Repositorio {
+  constructor() {
+    this.pecas = JSON.parse(readFileSync('./pecas.json'));
+    this.faturas = JSON.parse(readFileSync('./faturas.json'));
+  }
+
+  carregarFaturas() {
+    return this.faturas;
+  }
+
+  getPeca(apre) {
+    return this.pecas[apre.id];
+  }
+}
+
+module.exports = Repositorio;
